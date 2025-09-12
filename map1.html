@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark Location and Share on WhatsApp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      height: 80vh;
+      width: 100%;
+    }
+    #actions {
+      text-align: center;
+      padding: 10px;
+      background-color: #f8f9fa;
+    }
+    #actions button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #actions button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Mark Your Location</h1>
+  <div id="map"></div>
+  <div id="actions">
+    <button id="shareLocation">Share Location on WhatsApp</button>
+  </div>
+
+  <script>
+    let map, marker, selectedCoordinates;
+
+    function initMap() {
+      // Initialize the Google Map
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 28.6139, lng: 77.2090 }, // Default: New Delhi
+        zoom: 10,
+      });
+
+      // Add a click event listener to the map
+      map.addListener("click", (event) => {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+
+        // Remove the previous marker, if any
+        if (marker) marker.setMap(null);
+
+        // Add a new marker
+        marker = new google.maps.Marker({
+          position: { lat, lng },
+          map,
+        });
+
+        // Store the selected coordinates
+        selectedCoordinates = { lat, lng };
+
+        alert(`Location Selected: ${lat}, ${lng}`);
+      });
+    }
+
+    document.getElementById("shareLocation").addEventListener("click", function () {
+      if (!selectedCoordinates) {
+        alert("Please select a location on the map first!");
+        return;
+      }
+
+      // Generate the Google Maps link
+      const mapLink = `https://www.google.com/maps?q=${selectedCoordinates.lat},${selectedCoordinates.lng}`;
+
+      // Prepare the WhatsApp message
+      const message = `Hello! Here's my location: ${mapLink}. Click the link to view.`;
+
+      // Redirect to WhatsApp
+      window.open(`https://wa.me/9510189034?text=${encodeURIComponent(message)}`, "_blank");
+      
+    });
+  </script>
+  
+  <!-- Include the Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfQbg1h5ivAMK5U-3od9HUcxsc4KZ5dwM&callback=initMap" async defer></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Provider Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f8fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(3px);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(88, 77, 77, 0.1);
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        .button-container {
+            margin: 10px 0;
+        }
+        
+        .custom-button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .facebook-button {
+            background-color: #1877f2;
+            color: #fff;
+        }
+        
+        .yahoo-button {
+            background-color: #6001d2;
+            color: #fff;
+        }
+        
+        .custom-provider-button {
+            background-color: #333;
+            color: #fff;
+        }
+        
+        #appleid-signin {
+            margin-top: 10px;
+        }
+        
+        #user-info {
+            margin-top: 20px;
+        }
+        
+    </style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script src="https://cdn.apple.com/idms/js/sdk.js"></script>
+</head>
+<body background="Bg.jpg">
+    <div class="login-container">
+        <h1>sign up </h1>
+        <div id="google-login" class="button-container"></div>
+        <button id="facebook-login" class="custom-button facebook-button">Login with Facebook</button>
+        <div id="appleid-signin"></div>
+        <button id="yahoo-login" class="custom-button yahoo-button">Login with Yahoo</button>
+        <button id="custom-login" class="custom-button custom-provider-button">Login with Another Provider</button>
+        <p id="user-info"></p>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Google Login
+function handleGoogleResponse(response) {
+    const userDetails = jwtDecode(response.credential);
+    displayUserInfo(userDetails.name, userDetails.email, userDetails.picture);
+}
+
+function loadGoogleButton() {
+    google.accounts.id.initialize({
+        client_id: "504714223267-iv3f1uqaceors3sfojtrbm5tnu4ue0c6.apps.googleusercontent.com", // Replace with your Google Client ID
+        callback: handleGoogleResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById("google-login"), {
+        theme: "outline",
+        size: "large",
+    });
+}
+
+// Facebook Login
+function loadFacebookSDK() {
+    FB.init({
+        appId: "YOUR_FACEBOOK_APP_ID", // Replace with your Facebook App ID
+        cookie: true,
+        xfbml: true,
+        version: "v15.0",
+    });
+    document.getElementById("facebook-login").addEventListener("click", () => {
+        FB.login((response) => {
+            if (response.authResponse) {
+                FB.api("/me", { fields: "name,email,picture" }, (userInfo) => {
+                    displayUserInfo(userInfo.name, userInfo.email, userInfo.picture.data.url);
+                });
+            }
+        }, { scope: "email,public_profile" });
+    });
+}
+
+// Apple Login
+function loadAppleButton() {
+    AppleID.auth.init({
+        clientId: "YOUR_APPLE_CLIENT_ID", // Replace with your Apple Client ID
+        scope: "name email",
+        redirectURI: "YOUR_REDIRECT_URL", // Replace with your redirect URI
+        state: "example-state",
+    });
+}
+
+// Yahoo Login (Placeholder for Custom Implementation)
+document.getElementById("yahoo-login").addEventListener("click", () => {
+    alert("Yahoo login not implemented. Integrate Yahoo OAuth API.");
+});
+
+// Custom Provider Login (Placeholder for extensibility)
+document.getElementById("custom-login").addEventListener("click", () => {
+    alert("Custom provider login not implemented. Add the required provider's SDK or API.");
+});
+
+// Display User Info
+function displayUserInfo(name, email, picture) {
+    document.getElementById("user-info").innerHTML = `
+        <h3>Welcome, ${name}</h3>
+        <p>Email: ${email}</p>
+        <img src="${picture}" alt="User Picture" style="width: 100px; height: 100px; border-radius: 50%;">
+    `;
+}
+
+// JWT Decode
+function jwtDecode(token) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+        atob(base64)
+            .split("")
+            .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+    );
+    return JSON.parse(jsonPayload);
+}
+
+// Load Buttons
+window.onload = function () {
+    loadGoogleButton();
+    loadFacebookSDK();
+    loadAppleButton();
+};
+
+    </script>
+</body>
+</html>
