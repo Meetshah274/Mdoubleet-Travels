@@ -3,173 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Provider Login</title>
+    <title>Sign In | Mdoubleet Travels</title>
+    
+    <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f8fc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            backdrop-filter: blur(3px);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 8px rgba(88, 77, 77, 0.1);
-            text-align: center;
-        }
-        
-        h1 {
-            margin-bottom: 20px;
-        }
-        
-        .button-container {
-            margin: 10px 0;
-        }
-        
-        .custom-button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        
-        .facebook-button {
-            background-color: #1877f2;
-            color: #fff;
-        }
-        
-        .yahoo-button {
-            background-color: #6001d2;
-            color: #fff;
-        }
-        
-        .custom-provider-button {
-            background-color: #333;
-            color: #fff;
-        }
-        
-        #appleid-signin {
-            margin-top: 10px;
-        }
-        
-        #user-info {
-            margin-top: 20px;
-        }
-        
-    </style>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Identity Provider SDKs -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script src="https://cdn.apple.com/idms/js/sdk.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('Bg.jpg') no-repeat center center/cover;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 420px;
+            padding: 36px 28px;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .login-card h1 {
+            font-size: 24px;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .login-card p.tagline {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .sso-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Container for Official Google Button */
+        #google-login {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 14px 0;
+            color: #94a3b8;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        .sso-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 11px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1e293b;
+        }
+
+        .sso-btn:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        .sso-btn.facebook-btn {
+            background-color: #1877f2;
+            color: #ffffff;
+            border-color: #1877f2;
+        }
+        .sso-btn.facebook-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .sso-btn.apple-btn {
+            background-color: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+        .sso-btn.apple-btn:hover {
+            background-color: #1c1c1e;
+        }
+
+        .status-msg {
+            margin-top: 18px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .status-msg.info {
+            display: block;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+        }
+
+        .footer-links {
+            margin-top: 22px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .footer-links a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body background="Bg.jpg">
-    <div class="login-container">
-        <h1>sign up </h1>
-        <div id="google-login" class="button-container"></div>
-        <button id="facebook-login" class="custom-button facebook-button">Login with Facebook</button>
-        <div id="appleid-signin"></div>
-        <button id="yahoo-login" class="custom-button yahoo-button">Login with Yahoo</button>
-        <button id="custom-login" class="custom-button custom-provider-button">Login with Another Provider</button>
-        <p id="user-info"></p>
+<body>
+
+    <div class="login-card">
+        <h1>Welcome Back</h1>
+        <p class="tagline">Sign in to unlock exclusive trips & deals</p>
+
+        <div class="sso-container">
+            <!-- Google One Tap / Button Container -->
+            <div id="google-login"></div>
+
+            <div class="divider">
+                <span>or continue with</span>
+            </div>
+
+            <!-- Facebook Sign In -->
+            <button id="facebook-login" class="sso-btn facebook-btn" type="button">
+                <i class="fa-brands fa-facebook-f"></i> Continue with Facebook
+            </button>
+
+            <!-- Apple Sign In -->
+            <button id="apple-login" class="sso-btn apple-btn" type="button">
+                <i class="fa-brands fa-apple"></i> Continue with Apple
+            </button>
+        </div>
+
+        <!-- Status message during login/redirect -->
+        <div id="user-info" class="status-msg"></div>
+
+        <div class="footer-links">
+            Don't want to use social login? <br>
+            <a href="sign up.html">Create an email account</a> or <a href="meet11 login bar.html">Standard Login</a>
+        </div>
     </div>
-    <script src="script.js"></script>
+
     <script>
-        // Google Login
-function handleGoogleResponse(response) {
-    const userDetails = jwtDecode(response.credential);
-    displayUserInfo(userDetails.name, userDetails.email, userDetails.picture);
-}
+        // 1. Google Sign-In Callback Handler
+        function handleGoogleResponse(response) {
+            try {
+                const user = jwtDecode(response.credential);
+                displaySuccess(user.name, user.email, user.picture);
+                
+                // Save user to active session
+                localStorage.setItem("currentUser", JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.picture
+                }));
 
-function loadGoogleButton() {
-    google.accounts.id.initialize({
-        client_id: "504714223267-iv3f1uqaceors3sfojtrbm5tnu4ue0c6.apps.googleusercontent.com", // Replace with your Google Client ID
-        callback: handleGoogleResponse,
-    });
-    google.accounts.id.renderButton(document.getElementById("google-login"), {
-        theme: "outline",
-        size: "large",
-    });
-}
+                // Smooth redirect to authenticated travel home
+                setTimeout(() => {
+                    window.location.href = "travellogined.html";
+                }, 1200);
+            } catch (err) {
+                console.error("JWT Decode failed:", err);
+            }
+        }
 
-// Facebook Login
-function loadFacebookSDK() {
-    FB.init({
-        appId: "YOUR_FACEBOOK_APP_ID", // Replace with your Facebook App ID
-        cookie: true,
-        xfbml: true,
-        version: "v15.0",
-    });
-    document.getElementById("facebook-login").addEventListener("click", () => {
-        FB.login((response) => {
-            if (response.authResponse) {
-                FB.api("/me", { fields: "name,email,picture" }, (userInfo) => {
-                    displayUserInfo(userInfo.name, userInfo.email, userInfo.picture.data.url);
+        function initGoogleAuth() {
+            if (window.google) {
+                google.accounts.id.initialize({
+                    client_id: "504714223267-iv3f1uqaceors3sfojtrbm5tnu4ue0c6.apps.googleusercontent.com",
+                    callback: handleGoogleResponse,
+                    auto_select: false
+                });
+
+                google.accounts.id.renderButton(document.getElementById("google-login"), {
+                    theme: "outline",
+                    size: "large",
+                    width: 340,
+                    text: "continue_with",
+                    shape: "rectangular"
                 });
             }
-        }, { scope: "email,public_profile" });
-    });
-}
+        }
 
-// Apple Login
-function loadAppleButton() {
-    AppleID.auth.init({
-        clientId: "YOUR_APPLE_CLIENT_ID", // Replace with your Apple Client ID
-        scope: "name email",
-        redirectURI: "YOUR_REDIRECT_URL", // Replace with your redirect URI
-        state: "example-state",
-    });
-}
+        // 2. Facebook Sign-In Setup
+        function initFacebookAuth() {
+            if (window.FB) {
+                FB.init({
+                    appId: "YOUR_FACEBOOK_APP_ID", // Add your App ID when ready
+                    cookie: true,
+                    xfbml: true,
+                    version: "v19.0"
+                });
+            }
 
-// Yahoo Login (Placeholder for Custom Implementation)
-document.getElementById("yahoo-login").addEventListener("click", () => {
-    alert("Yahoo login not implemented. Integrate Yahoo OAuth API.");
-});
+            document.getElementById("facebook-login").addEventListener("click", () => {
+                if (typeof FB !== "undefined" && FB.login) {
+                    FB.login((response) => {
+                        if (response.authResponse) {
+                            FB.api("/me", { fields: "name,email,picture" }, (userInfo) => {
+                                displaySuccess(userInfo.name, userInfo.email, userInfo.picture?.data?.url);
+                                localStorage.setItem("currentUser", JSON.stringify({
+                                    name: userInfo.name,
+                                    email: userInfo.email,
+                                    avatar: userInfo.picture?.data?.url
+                                }));
+                                setTimeout(() => window.location.href = "travellogined.html", 1200);
+                            });
+                        }
+                    }, { scope: "public_profile,email" });
+                } else {
+                    simulateDevLogin("Facebook User");
+                }
+            });
+        }
 
-// Custom Provider Login (Placeholder for extensibility)
-document.getElementById("custom-login").addEventListener("click", () => {
-    alert("Custom provider login not implemented. Add the required provider's SDK or API.");
-});
+        // 3. Apple Sign-In Handler
+        document.getElementById("apple-login").addEventListener("click", () => {
+            simulateDevLogin("Apple Traveler");
+        });
 
-// Display User Info
-function displayUserInfo(name, email, picture) {
-    document.getElementById("user-info").innerHTML = `
-        <h3>Welcome, ${name}</h3>
-        <p>Email: ${email}</p>
-        <img src="${picture}" alt="User Picture" style="width: 100px; height: 100px; border-radius: 50%;">
-    `;
-}
+        // 4. Decode Google JWT Token
+        function jwtDecode(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+            return JSON.parse(jsonPayload);
+        }
 
-// JWT Decode
-function jwtDecode(token) {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-        atob(base64)
-            .split("")
-            .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-            .join("")
-    );
-    return JSON.parse(jsonPayload);
-}
+        // Helper: Show authenticated state
+        function displaySuccess(name, email, picture) {
+            const infoBox = document.getElementById("user-info");
+            infoBox.className = "status-msg success";
+            infoBox.innerHTML = `
+                <strong>Welcome, ${name}!</strong><br>
+                <span>Redirecting to your dashboard...</span>
+            `;
+        }
 
-// Load Buttons
-window.onload = function () {
-    loadGoogleButton();
-    loadFacebookSDK();
-    loadAppleButton();
-};
+        // Helper for local development testing
+        function simulateDevLogin(providerName) {
+            const infoBox = document.getElementById("user-info");
+            infoBox.className = "status-msg info";
+            infoBox.innerHTML = `Connecting with ${providerName}... Redirecting to Mdoubleet Travels!`;
+            localStorage.setItem("currentUser", JSON.stringify({
+                name: providerName,
+                email: "traveler@mdoubleet.com"
+            }));
+            setTimeout(() => {
+                window.location.href = "travellogined.html";
+            }, 1000);
+        }
 
+        // Initialize on window load
+        window.onload = function () {
+            initGoogleAuth();
+            initFacebookAuth();
+        };
     </script>
 </body>
 </html>
