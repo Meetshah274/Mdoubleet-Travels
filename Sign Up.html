@@ -3,30 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mdoubleet Sign Up</title>
+    <title>Sign Up | Mdoubleet Travels</title>
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Font Awesome for eye icons & travel brand icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Fallback / Baseline styles if not covered in styles.css */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('Bg.jpg') no-repeat center center/cover;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+        }
+
+        .container h1 {
+            margin: 0 0 8px 0;
+            font-size: 26px;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            display: none;
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #f87171;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 11px 40px 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #0d6efd;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: #0b5ed7;
+        }
+
+        .login-link {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body background="Bg.jpg">
+<body>
     <div class="container">
-        <h1>Sign Up for Travel</h1>
-        <form id="signupForm" onsubmit="return validateForm()">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+        <h1>Join Mdoubleet Travels</h1>
+        <p class="subtitle">Create an account to unlock deals and manage bookings</p>
 
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <!-- Dynamic Inline Error Box -->
+        <div id="errorMessage" class="error-message" role="alert"></div>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <form id="signupForm" novalidate>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <div class="input-wrapper">
+                    <input type="text" id="name" name="name" placeholder="Meet Shah" required>
+                </div>
+            </div>
 
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
-            <a href="travellogined.html">
-            <button type="submit">Sign Up</button>
-            </a>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" placeholder="name@example.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Minimum 6 characters" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('password', this)" title="Show/Hide password"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('confirmPassword', this)" title="Show/Hide password"></i>
+                </div>
+            </div>
+
+            <!-- Removed <a> wrapping to allow validation to execute -->
+            <button type="submit" class="btn-submit">Sign Up</button>
         </form>
+
         <p class="login-link">Already have an account? <a href="meet11 login bar.html">Log In</a></p>
     </div>
+
+    <!-- Companion Validation Script -->
     <script src="script2.js"></script>
 </body>
 </html>
