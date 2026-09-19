@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In | Mdoubleet Travels</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles1.css">
+    
+    <!-- Font Awesome for eye toggle and icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url('Bg.jpg') no-repeat center center/cover;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 36px 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .container h2 {
+            margin-bottom: 6px;
+            font-size: 24px;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .error-message {
+            display: none;
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            border: 1px solid #f87171;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 11px 40px 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #0d6efd;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: #0b5ed7;
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 20px;
+        }
+
+        .signup-link a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .social-link {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+        }
+        .social-link a {
+            color: #475569;
+            text-decoration: none;
+        }
+        .social-link a:hover {
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Log In</h2>
+        <p class="subtitle">Access your trips and saved travel packages</p>
+
+        <!-- Inline Error / Status Box -->
+        <div id="errorMessage" class="error-message" role="alert"></div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" placeholder="name@example.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('password', this)" title="Show/Hide password"></i>
+                </div>
+            </div>
+
+            <!-- Removed <a> wrapping to let JavaScript validate first -->
+            <button type="submit" class="btn-submit">Log In</button>
+        </form>
+
+        <!-- Make sure the href below matches the EXACT filename in your repo without case differences -->
+        <p class="signup-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        
+        <div class="social-link">
+            <a href="google.html"><i class="fa-brands fa-google"></i> Sign in with Google / Social</a>
+        </div>
+    </div>
+
+    <!-- Script that performs matching with localStorage registered users -->
+    <script src="script3.js"></script>
+</body>
+</html>
