@@ -3,303 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mdoubleet</title>
-    <link rel="stylesheet" href="styles2.css">
+    <title>Sign In | Mdoubleet Travels</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Identity Provider SDKs -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script src="https://cdn.apple.com/idms/js/sdk.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('Bg.jpg') no-repeat center center/cover;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 420px;
+            padding: 36px 28px;
+            border-radius: 16px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .login-card h1 {
+            font-size: 24px;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .login-card p.tagline {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .sso-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Container for Official Google Button */
+        #google-login {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 14px 0;
+            color: #94a3b8;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        .sso-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 11px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1e293b;
+        }
+
+        .sso-btn:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        .sso-btn.facebook-btn {
+            background-color: #1877f2;
+            color: #ffffff;
+            border-color: #1877f2;
+        }
+        .sso-btn.facebook-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .sso-btn.apple-btn {
+            background-color: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+        .sso-btn.apple-btn:hover {
+            background-color: #1c1c1e;
+        }
+
+        .status-msg {
+            margin-top: 18px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .status-msg.info {
+            display: block;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+        }
+
+        .footer-links {
+            margin-top: 22px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .footer-links a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <section class="home">
-        <div class="home-box">
-            <nav>
-                <div class="logo bars">
-                    <div class="bar">
-                        <i class="fa-solid fa-bars"></i>
 
-                    </div>
-                    <img src="Mdoubleet.png" alt="">
-                </div>
-                <div class="menu">
-                <div class="close">
-                    <i class="fa-solid fa-close"></i>
-                </div>
-                <ul>
-                    <li><a href="travellogined.html">home</a></li>
-                    <li><a href="#travel">travel packages</a></li>
-                    <li><a href="#destinations">destinations</a></li>
-                    <li><a href="#feedback">feedback</a></li>
-                    <li><a href="#about-us">about</a></li>
-                </ul>
+    <div class="login-card">
+        <h1>Welcome Back</h1>
+        <p class="tagline">Sign in to unlock exclusive trips & deals</p>
+
+        <div class="sso-container">
+            <!-- Google One Tap / Button Container -->
+            <div id="google-login"></div>
+
+            <div class="divider">
+                <span>or continue with</span>
             </div>
-    </nav>
 
-    <div class="content">
-        <h5></h5>
-        <h1>Let's embark on your dream journey</h1>
-        <p>Discover inspiring destinations, create unforgettable memories, and travel with confidence - adventure starts here.</p>
-        <div class="search">
-            
-            <a href="map1.html">
-                <!---<a href="https://wa.me/9510189034?text=Hello%20I%20am%20interested%20in%20your%20services" target="_blank">-->
-                <button style="background-color: #25D366;
-                color: white;
-                padding: 10px 20px;
-                border: none; 
-                border-radius: 5px;
-                cursor: pointer;">
-                select the location and contact us
-                </button>
-            <!--</a>--></a>
+            <!-- Facebook Sign In -->
+            <button id="facebook-login" class="sso-btn facebook-btn" type="button">
+                <i class="fa-brands fa-facebook-f"></i> Continue with Facebook
+            </button>
+
+            <!-- Apple Sign In -->
+            <button id="apple-login" class="sso-btn apple-btn" type="button">
+                <i class="fa-brands fa-apple"></i> Continue with Apple
+            </button>
+        </div>
+
+        <!-- Status message during login/redirect -->
+        <div id="user-info" class="status-msg"></div>
+
+        <div class="footer-links">
+            Don't want to use social login? <br>
+            <a href="sign up.html">Create an email account</a> or <a href="meet11 login bar.html">Standard Login</a>
         </div>
     </div>
-    </section>
-    <br>
-        
-    <br>
 
-    <section class="travel">
-        <div class="container" id="travel">
-        <div class="box box1">
-            <img src="planning.png" alt="">
-            <div class="content">
-                <h4>seamless travel planning</h4>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta rerum atque hic consequuntur alias quaerat amet eum molestias, est exercitationem omnis, a et nobis voluptate aut assumenda corrupti beatae quisquam?</p>
-            </div>
-        </div>
-        <div class="box box2">
-            <img src="map.png" alt="">
-            <div class="content">
-                <h4>seamless travel planning</h4>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta rerum atque hic consequuntur alias quaerat amet eum molestias, est exercitationem omnis, a et nobis voluptate aut assumenda corrupti beatae quisquam?</p>
-            </div>
-        </div>
-        <div class="box box3">
-            <img src="trust.png" alt="">
-            <div class="content">
-                <h4>seamless travel planning</h4>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta rerum atque hic consequuntur alias quaerat amet eum molestias, est exercitationem omnis, a et nobis voluptate aut assumenda corrupti beatae quisquam?</p>
-            </div>
-        </div>
-        </div>
-    </section>
+    <script>
+        // 1. Google Sign-In Callback Handler
+        function handleGoogleResponse(response) {
+            try {
+                const user = jwtDecode(response.credential);
+                displaySuccess(user.name, user.email, user.picture);
+                
+                // Save user to active session
+                localStorage.setItem("currentUser", JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.picture
+                }));
 
-    <section class="destinations">
-        <h4 class="label">destinations</h4>
-        <div class="container" id="destinations">
-            <div class="container-box">
-                <h2 class="heading">city escape and natural retreats</h2>
-                <div class="content">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam ad quidem iusto ab id odio dolorem? Distinctio tempora fuga, perferendis illo quo repudiandae dolorum praesentium voluptatum necessitatibus repellendus exercitationem modi.</p>
-                    <a href="#">explore more <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-            </div>
-            <div class="gallery">
-                <div class="box box1">
-                    <img src="Bg.jpg" alt="">
-                    <div class="text">
-                        <h2>jodhpur</h2>
-                    </div>
-                </div>
-                <div class="box box1">
-                    <img src="destinations-1.jpg" alt="">
-                    <div class="text">
-                        <h2>bali</h2>
-                    </div>
-                </div>
-                <div class="box box1">
-                    <img src="destinations-2.jpg" alt="">
-                    <div class="text">
-                        <h2>nagar</h2>
-                    </div>
-                </div>
-                <div class="box box1">
-                    <img src="destinations-3.jpg" alt="">
-                    <div class="text">
-                        <h2>east java</h2>
-                    </div>
-                </div>
-                <div class="box box5">
-                    <img src="destinations-4.jpg" alt="">
-                    <div class="text">
-                        <h2>ladakh</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                // Smooth redirect to authenticated travel home
+                setTimeout(() => {
+                    window.location.href = "travellogined.html";
+                }, 1200);
+            } catch (err) {
+                console.error("JWT Decode failed:", err);
+            }
+        }
 
-    <section class="featured">
-        <div class="gallery">
-            <div class="box box1">
-                <div class="first-box">
-                    <h4 class="label">featured offers</h4>
-                    <h2 class="heading">unblock exclusive travel deals</h2>
-                    <p>let's enjoy life with the journey of my web code, subscribe my youtube channel.</p>
-                    <a href="#">show more</a>
-                    <div class="image">
-                        <img src="plane.png" alt="">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="box box2">
-                <img src="featured-1.jpg" alt="">
-                <div class="content">
-                    <h2>yuliaya hotel</h2>
-                    <p>gill trawangan, lombok</p>
-                    <div class="review-and-idr">
-                        <div class="review"><i class="fa-solid fa-star"></i>4.9 | 853 review</div>
-                        <p>idr 343.000</p>
-                    </div>
-                </div>
-            </div>
-            <div class="box box3">
-                <img src="featured-2.jpg" alt="">
-                <div class="content">
-                    <h2>utkarsh hotel</h2>
-                    <p>kishan, nagar</p>
-                    <div class="review-and-idr">
-                        <div class="review"><i class="fa-solid fa-star"></i>4.9 | 853 review</div>
-                        <p>idr 343.000</p>
-                    </div>
-                </div>
-            </div>
-            <div class="box box4">
-                <img src="featured-3.jpg" alt="">
-                <div class="content">
-                    <h2>tonk hotel</h2>
-                    <p>bajagarah, lombok</p>
-                    <div class="review-and-idr">
-                        <div class="review"><i class="fa-solid fa-star"></i>4.9 | 853 review</div>
-                        <p>idr 343.000</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="feedback">
-        <div class="container" id="feedback">
-            <h4 class="label">adventure's voices</h4>
-            <h2 class="heading">adventure's voices</h2>
-            <p class="paragraph">
-                real stories from our adventures community.
-            </p>
-        </div>
-        <div class="voices">
-            <div class="voice box1">
-                <div class="profile">
-                    <img src="photo1.jpg" alt="">
-                    <div class="detail">
-                        <li>lucky sharma</li>
-                        <li>traveler</li>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore dignissimos impedit earum atque, vel perspiciatis nostrum, perferendis accusantium quas quasi amet libero maxime, ipsum deleniti sit. Alias ipsa at itaque!</p>
-            </div>
-            <div class="voice box2">
-                <div class="profile">
-                    <img src="photo2.jpg" alt="">
-                    <div class="detail">
-                        <li>divya sharma</li>
-                        <li>traveler</li>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore dignissimos impedit earum atque, vel perspiciatis nostrum, perferendis accusantium quas quasi amet libero maxime, ipsum deleniti sit. Alias ipsa at itaque!</p>
-            </div>
-            <div class="voice box3">
-                <div class="profile">
-                    <img src="photo3.jpg" alt="">
-                    <div class="detail">
-                        <li>prem sharma</li>
-                        <li>traveler</li>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore dignissimos impedit earum atque, vel perspiciatis nostrum, perferendis accusantium quas quasi amet libero maxime, ipsum deleniti sit. Alias ipsa at itaque!</p>
-            </div>
-            <div class="voice box4">
-                <div class="profile">
-                    <img src="photo4.jpg" alt="">
-                    <div class="detail">
-                        <li>priya sharma</li>
-                        <li>traveler</li>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore dignissimos impedit earum atque, vel perspiciatis nostrum, perferendis accusantium quas quasi amet libero maxime, ipsum deleniti sit. Alias ipsa at itaque!</p>
-            </div>
-            <div class="voice box5">
-                <div class="profile">
-                    <img src="photo5.jpg" alt="">
-                    <div class="detail">
-                        <li>gaurav sharma</li>
-                        <li>traveler</li>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore dignissimos impedit earum atque, vel perspiciatis nostrum, perferendis accusantium quas quasi amet libero maxime, ipsum deleniti sit. Alias ipsa at itaque!</p>
-            </div>
-            <div class="voice box1">
-                <div class="profile">
-                    <img src="photo1.jpg" alt="">
-                    <div class="detail">
-                        <li>lucky sharma</li>
-                        <li>traveler</li>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore dignissimos impedit earum atque, vel perspiciatis nostrum, perferendis accusantium quas quasi amet libero maxime, ipsum deleniti sit. Alias ipsa at itaque!</p>
-            </div>
-        </div>
+        function initGoogleAuth() {
+            if (window.google) {
+                google.accounts.id.initialize({
+                    client_id: "504714223267-iv3f1uqaceors3sfojtrbm5tnu4ue0c6.apps.googleusercontent.com",
+                    callback: handleGoogleResponse,
+                    auto_select: false
+                });
 
-    </section>
-    <footer>
-        <div class="footer">
-            <div class="container">
-                <div class="detail">
-                    <h3>Mdoubleet</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, aspernatur? Nisi, numquam eum rerum aliquid voluptates qui maxime quisquam neque consequatur laudantium est accusamus illo necessitatibus. Aliquam libero sit odit?</p>
-                    <h5>get in touch</h5>
-                    <a href="@">web code journey</a>
-                    <div class="social">
-                        <a href="https://www.linkedin.com/in/meet-shah-1-3857b0357"><i class="fa-brands fa-linkedin" style="font-size: 30px; color:#0a66c2 ;"></i></a>
-                        <a href="https://www.instagram.com/mdoubleet"><i class="fa-brands fa-instagram" style="font-size: 30px; color: #c13584;"></i></a>
-                        <a href="https://www.youtube.com/@mdoubleet"><i class="fa-brands fa-youtube" style="font-size: 30px; color: #ff0000;"></i></a>
-                    </div>
-                </div>
-                <div class="about-us" id="about-us">
-                    <li><a href="#">about us</a></li>
-                    <!-- <li><a href="#">our term</a></li> -->
-                    <li><a href="reg form.html">careers <span>we're hiring</span></a></li>
-                    <li><a href="#">mission and values</a></li>
-                    <li><a href="#">partnerships</a></li>
-                </div>
-                <div class="about-us">
-                    <li><a href="#">faq</a></li>
-                    <li><a href="#">booking guide</a></li>
-                    <li><a href="#">cancellation policy</a></li>
-                    <li><a href="#">site map</a></li>
-                </div>
-                <div class="about-us">
-                    <li><a href="#">news letter</a></li>
-                    <li><a href="#">blog</a></li>
-                    <li><a href="#">gallery</a></li>
-                    <li><a href="#">offers</a></li>
-                </div>
-            </div>
-            <div class="copyright">
-                <div>
-                    &copy;2025 -Mdoubleet, inc, all rights reserved
-                </div>
-                <div>
-                    <a href="#">terms & condtions</a>
-                    <a href="#">privacy policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="script4.js"></script>
-    
+                google.accounts.id.renderButton(document.getElementById("google-login"), {
+                    theme: "outline",
+                    size: "large",
+                    width: 340,
+                    text: "continue_with",
+                    shape: "rectangular"
+                });
+            }
+        }
+
+        // 2. Facebook Sign-In Setup
+        function initFacebookAuth() {
+            if (window.FB) {
+                FB.init({
+                    appId: "YOUR_FACEBOOK_APP_ID", // Add your App ID when ready
+                    cookie: true,
+                    xfbml: true,
+                    version: "v19.0"
+                });
+            }
+
+            document.getElementById("facebook-login").addEventListener("click", () => {
+                if (typeof FB !== "undefined" && FB.login) {
+                    FB.login((response) => {
+                        if (response.authResponse) {
+                            FB.api("/me", { fields: "name,email,picture" }, (userInfo) => {
+                                displaySuccess(userInfo.name, userInfo.email, userInfo.picture?.data?.url);
+                                localStorage.setItem("currentUser", JSON.stringify({
+                                    name: userInfo.name,
+                                    email: userInfo.email,
+                                    avatar: userInfo.picture?.data?.url
+                                }));
+                                setTimeout(() => window.location.href = "travellogined.html", 1200);
+                            });
+                        }
+                    }, { scope: "public_profile,email" });
+                } else {
+                    simulateDevLogin("Facebook User");
+                }
+            });
+        }
+
+        // 3. Apple Sign-In Handler
+        document.getElementById("apple-login").addEventListener("click", () => {
+            simulateDevLogin("Apple Traveler");
+        });
+
+        // 4. Decode Google JWT Token
+        function jwtDecode(token) {
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+            return JSON.parse(jsonPayload);
+        }
+
+        // Helper: Show authenticated state
+        function displaySuccess(name, email, picture) {
+            const infoBox = document.getElementById("user-info");
+            infoBox.className = "status-msg success";
+            infoBox.innerHTML = `
+                <strong>Welcome, ${name}!</strong><br>
+                <span>Redirecting to your dashboard...</span>
+            `;
+        }
+
+        // Helper for local development testing
+        function simulateDevLogin(providerName) {
+            const infoBox = document.getElementById("user-info");
+            infoBox.className = "status-msg info";
+            infoBox.innerHTML = `Connecting with ${providerName}... Redirecting to Mdoubleet Travels!`;
+            localStorage.setItem("currentUser", JSON.stringify({
+                name: providerName,
+                email: "traveler@mdoubleet.com"
+            }));
+            setTimeout(() => {
+                window.location.href = "travellogined.html";
+            }, 1000);
+        }
+
+        // Initialize on window load
+        window.onload = function () {
+            initGoogleAuth();
+            initFacebookAuth();
+        };
+    </script>
 </body>
-
 </html>
-
-
-
